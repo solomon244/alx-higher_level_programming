@@ -1,8 +1,10 @@
 #!/usr/bin/python3
-c = 0
+
+
+nc = 0
 for n in range(122, 96, -1):
     if n % 2 == 0:
-         c = n
+        nc = n
     else:
-         c = n - 32
-    print("{}".format(chr(c)), end='')
+        nc = n - 32
+    print("{}".format(chr(nc)), end='')
