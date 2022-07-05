@@ -1,16 +1,9 @@
 #!/usr/bin/python3
+"""this module appends a string at end of a text file"""
 
 
-def write_file(filename="", text=""):
-    """Write string to file
-    Args:
-        filename (str): string of path to file
-        text (str): string to write to file
-    Returns:
-        number of characters written
-    """
-    chars_written = 0
-    with open(filename, 'w', encoding='utf-8') as f:
-        chars_written += f.write(text)
-    return chars_written
-
+def append_write(filename="", text=""):
+    """appends a string at the end of a text file
+    and returns the number of characters added"""
+    with open(filename, mode="a+", encoding="utf-8") as f:
+        return f.write(text)
