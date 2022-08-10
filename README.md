@@ -1,2 +1,1 @@
-alx-higher level programming
-Python
+SQL - More queries
