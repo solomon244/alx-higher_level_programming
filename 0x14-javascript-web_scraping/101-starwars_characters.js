@@ -10,26 +10,26 @@ const url = `https://swapi-api.hbtn.io/api/films/${filmId}`;
 
 function characterRequest(characterUrl) {
     return new Promise((resolve, reject) => {
-        request.get(characterUrl, (error, _resp, body) => {
-            if (error !== null) {
-                reject(error);
+        request.get(characterUrl, (err, _resp, body) => {
+            if (err !== null) {
+                reject(err);
             }
             resolve(body);
         });
     });
 }
 
-request.get(url, (error, _resp, body) => {
-    if (error === null) {
+request.get(url, (err, _resp, body) => {
+    if (err === null) {
         const film = JSON.parse(body);
         const characters = film.characters;
         characters.forEach((character) => {
             characterRequest(character).then((body) => {
                 const characterInfo = JSON.parse(body);
                 console.log(characterInfo.name);
-            }).catch(error => console.log(error));
+            }).catch(err => console.log(err));
         });
     } else {
-        console.log(error);
+        console.log(err);
     }
 });
