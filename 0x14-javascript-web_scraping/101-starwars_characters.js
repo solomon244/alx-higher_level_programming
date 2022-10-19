@@ -1,35 +1,50 @@
 #!/usr/bin/node
-/**
+/*
  * script that prints all characters of a Star Wars movie:
  */
 
 const request = require('request');
-const process = require('process');
-const filmId = process.argv[2];
-const url = `https://swapi-api.hbtn.io/api/films/${filmId}`;
 
-function characterRequest(characterUrl) {
-    return new Promise((resolve, reject) => {
-        request.get(characterUrl, (err, _resp, body) => {
-            if (err !== null) {
-                reject(err);
-            }
-            resolve(body);
+function getDataFrom (url) {
+  return new Promise(function (resolve, reject) {
+    request(url, function (error, _res, body) {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(body);
+      }
+    });
+  });
+}
+
+function errorHandler (error) {
+  console.log(error);
+}
+
+function printMovieCharacters (movieId) {
+  const movieUri = `https://swapi-api.hbtn.io/api/films/${movieId}`;
+
+  getDataFrom(movieUri)
+    .then(JSON.parse, errorHandler)
+	
+    .then(function (res) {
+      const characters = res.characters;
+      const promises = [];
+
+      for (let i = 0; i < characters.length; ++i) {
+        promises.push(getDataFrom(characters[i]));
+      }
+
+      Promise.all(promises)
+        .then((results) => {
+          for (let i = 0; i < results.length; ++i) {
+            console.log(JSON.parse(results[i]).name);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
         });
     });
 }
 
-request.get(url, (err, _resp, body) => {
-    if (err === null) {
-        const film = JSON.parse(body);
-        const characters = film.characters;
-        characters.forEach((character) => {
-            characterRequest(character).then((body) => {
-                const characterInfo = JSON.parse(body);
-                console.log(characterInfo.name);
-            }).catch(err => console.log(err));
-        });
-    } else {
-        console.log(err);
-    }
-});
+printMovieCharacters(process.argv[2]);
