@@ -17,7 +17,7 @@ function getDataFrom (url) {
   });
 }
 
-function errorHandler (error) {
+function errHandler (error) {
   console.log(error);
 }
 
@@ -25,7 +25,7 @@ function printMovieCharacters (movieId) {
   const movieUri = `https://swapi-api.hbtn.io/api/films/${movieId}`;
 
   getDataFrom(movieUri)
-    .then(JSON.parse, errorHandler)
+    .then(JSON.parse, errHandler)
 	
     .then(function (res) {
       const characters = res.characters;
